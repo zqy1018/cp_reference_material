@@ -1,0 +1,248 @@
+% source: https://www.jianshu.com/p/28552706e811
+
+%==============================常用宏包、环境==============================%
+\documentclass[a4]{article}
+\usepackage{ctex} % For Chinese characters
+\usepackage{amsmath, amsthm}
+\usepackage{minted}
+\usepackage{geometry} % 设置页边距
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{fancyhdr} % 自定义页眉页脚
+\usepackage{longtable}
+\setsansfont{Consolas} % 设置英文字体
+\setmonofont[Mapping={}]{Consolas} % 英文引号之类的正常显示，相当于设置英文字体
+\geometry{left=1cm,right=1cm,top=2cm,bottom=0.5cm} % 页边距
+\setlength{\columnsep}{30pt}
+% \setlength\columnseprule{0.4pt} % 分割线
+%==============================常用宏包、环境==============================%
+
+%==============================页眉、页脚、代码格式设置==============================%
+% 页眉、页脚设置
+\pagestyle{fancy}
+% \lhead{CUMTB}
+\lhead{zqy1018}
+\chead{}
+% \rhead{Page \thepage}
+\rhead{第 \thepage 页}
+\lfoot{} 
+\cfoot{}
+\rfoot{}
+\renewcommand{\headrulewidth}{0.4pt} 
+\renewcommand{\footrulewidth}{0.4pt}
+
+\theoremstyle{definition}
+\newtheorem*{theorem}{Theorem}
+
+\newcommand{\myminted}[2]{
+	\inputminted[
+	breaklines,
+	breakafter=()\&|,
+	fontsize=\small,
+	frame=single,
+	framesep=1mm,
+	framerule=1pt,
+	linenos,
+	numbersep=1pt,
+	tabsize=4,
+	]{#1}{#2}
+}
+
+\usepackage[pdfstartview=FitH,
+CJKbookmarks=true,
+bookmarksnumbered=true,
+bookmarksopen=true,
+colorlinks,
+pdfborder=001,
+linkcolor=blue,
+anchorcolor=blue,
+citecolor=blue,
+]{hyperref}
+\hypersetup{hidelinks}
+
+\usepackage{enumitem}
+\setenumerate[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+\setitemize[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+\setdescription{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+
+
+%==============================页眉、页脚、代码格式设置==============================%
+
+%==============================标题和目录==============================%
+
+\begin{document}%\small
+	
+\title{个人常用代码库}
+\author{zqy1018}
+\renewcommand{\today}{\number\year 年 \number\month 月 \number\day 日}
+
+\maketitle
+%\begin{titlepage}
+%\maketitle
+%\end{titlepage}
+
+\pagestyle{empty}
+\renewcommand{\contentsname}{目录}
+\tableofcontents
+\newpage\clearpage
+\newpage
+\pagestyle{fancy}
+\setcounter{page}{1}   %new page
+%==============================标题和目录==============================%
+
+%==============================正文部分==============================%
+
+%------------------------------数据结构------------------------------%
+\section{数据结构}
+
+%\subsection{二维 Sparse Table}
+
+
+%\subsection{带位置修改堆}
+
+\subsection{非旋转 Treap}
+
+\myminted{cpp}{data_structure/fhqtreap_full.cpp}
+
+
+%对每一个位置维护位置 $pos$ 和插入时间 $id$ 即可。
+
+
+%\newpage
+
+%------------------------------图论------------------------------%
+
+
+
+
+%------------------------------数学------------------------------%
+
+\section{数学}
+
+\subsection{快速乘}
+
+\myminted{cpp}{math/fstmul_full.cpp}
+
+\subsection{扩展 Euclid 及应用}
+
+\myminted{cpp}{math/ex_euclid_full.cpp}
+
+\subsection{线性同余不等式}
+
+给定 $0 \le l \le r < m, d < m$，找 $l \le dx \bmod m \le r$ 的最小非负整数解。详见 POJ 3530。
+
+\myminted{cpp}{math/modinq_full.cpp}
+
+\subsection{求逆元}
+
+\myminted{cpp}{math/inverse_full.cpp}
+
+\subsection{值域固定的快速 $\gcd$}
+
+\myminted{cpp}{math/fstgcd_full.cpp}
+
+\subsection{CRT 及其扩展}
+
+普通 CRT：对于 $n$ 个形如 $x \equiv a_i \pmod {m_i}$ 的线性方程，要求 $m_i$ 间两两互质。设 $M = \prod m_i, M_i = \frac{M}{m_i}, b_i M_i \equiv 1 \pmod {m_i}$，那么 $x  = \sum a_i b_i M_i$ 是唯一解。
+
+扩展 CRT：考虑每次合并两个线性方程：$x\equiv b_1 \pmod {m_1} , ax\equiv b_2 \pmod {m_2}$。写 $x=b_1+tm_1$，带入得 $m_1 a t\equiv b_2 - ab_1 \pmod {m_2}$。解出 $t$，如 $t\equiv c \pmod {m_2}$，则 $t=c+dm_2$，带入，从而 $x\equiv b_1+cm_1 \pmod {\operatorname{lcm}(m_1, m_2)}$。
+
+\myminted{cpp}{math/CRT_full.cpp}
+
+\subsection{组合数取模}
+
+普通 Lucas：$p$ 为质数时，等价于把 $n, m$ 在 $p$ 进制下分解后求组合数再乘起来。
+$$
+\binom{n}{m} \equiv \binom{\lfloor \frac{n}{p} \rfloor}{\lfloor \frac{m}{p} \rfloor} \binom{n \bmod p}{m \bmod p} \pmod p
+$$
+
+扩展 Lucas：$p$ 不为质数时将其分解成 $p_i^k$，对每一个分别求解然后用 CRT 合并。分开处理，对阶乘中 $p$ 的倍数计算 $p$ 的幂次，对其他部分找循环节。
+
+\myminted{cpp}{math/Lucas_full.cpp}
+
+\subsection{高斯消元}
+
+\myminted{cpp}{math/gauss_elimination_AA.cpp}
+%\subsection{线性基}
+
+%自高到低。
+
+\subsection{大数分解}
+
+\myminted{cpp}{math/factorization_full.cpp}
+
+%\subsection{BSGS 及其扩展}
+
+
+
+
+
+
+%\subsection{类 Euclid 算法}
+
+%\subsection{找原根}
+
+
+\subsection{博弈论}
+
+\input{math/game_theory.tex}
+
+\subsection{数学知识}
+
+%\subsubsection{各种常数}
+
+%\begin{itemize}
+	%\item Ramsey 数：
+%\end{itemize}
+
+\subsubsection{循环矩阵乘法}
+
+定义：方阵，下一行为上一行的右循环移位。关于加法、乘法封闭。乘法规则：
+$$
+c_{k} = \sum_{(i + j) \bmod n = k} a_i b_j
+$$
+
+可以只用第一行表示。用行向量乘方便，$aB=c \iff AB=C$。
+
+%\subsubsection{Doob 鞅停时定理}
+
+
+\subsubsection{组合学定理}
+
+\begin{itemize}
+	%\item (Raney) 
+	\item (Ramsey) $\forall p \ge r(m, n), K_p \rightarrow K_m, K_n$. 
+	\item (Dilworth) 最小链覆盖的链数等于最长反链长度，反之亦然。 
+\end{itemize}
+
+
+
+%------------------------------杂项------------------------------%
+
+\section{杂项}
+
+\subsection{Zeller 公式}
+
+输入年月日，告诉是周几，返回 1 就是星期一，7 就是星期天。
+
+\myminted{cpp}{misc/Zeller_full.cpp}
+
+\subsection{自适应 Simpson 积分}
+
+\myminted{cpp}{misc/asr_full.cpp}
+
+\subsection{位运算}
+
+\myminted{cpp}{misc/bit_operation_full.cpp}
+
+\subsection{Python 读到 EOF}
+
+\myminted{python}{misc/python_EOF_full.py}
+
+%\subsection{积分表和微分方程}
+
+
+
+
+%==============================正文部分==============================%
+\end{document}
